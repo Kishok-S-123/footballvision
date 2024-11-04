@@ -30,8 +30,30 @@ yolov8 vision based football analysis bot using Bundesliga Videos dataset from K
 
 ## Player Team Detection:
 - Next, in order to be able to produce more meaningful inferences/analytics, it would be a good idea to separate players by the team they are playing for
-- This can be achieved by applying k-Nearest Neighbours, a lazy learning ML technique, to the bounding box detections of all players.
+- This can be achieved by applying k means, an unsupervised learning technique, to the bounding box detections of all players as we just need to split the players into their respective roles (team 1, team 2, referee).
 - To begin this process, we take all the bounding box detections for players from the output of the predict function using our finetuned YOLOv8 model
-- Then for each frame, we apply our k-NN technique to each frame and assign team 1 and team 2 classes accordingly
--  
+- Then for each frame of the video, we can apply this technique to assign a team to each tracker id
 
+- We begin by extracting a detection of a player from the results of the YOLO model
+![alt text](assets/sample_player_img.jpg)
+
+- We would like to use the player's shirt to assign teams, meaning that the bottom half of the image will not be required and may introduce unnecessary complexity
+- As a result we shall crop the image to only include the top half of the player detection
+![alt text](assets/player_top_half.png)
+
+- With K-Means we are able to segment the image into 2 classes: player and background to a functional degree
+![alt text](assets/player_seg_img.png)
+
+- We can return our cluster centre values to see the average colour of the players kit, as well as the average colour values of the grass.
+- This can then be placed into an RGB colour picker to see what our KMeans model has calculated:
+![alt text](assets/playershirtcol.jpg)
+![alt text](assets/grass_col.jpg)
+
+- By doing this for every player detection in the video, we can achieve team identification, which can go a long way into gameplay analysis.
+
+
+- Once we have the player shirt colour, we can compare 
+
+## Video processing pipeline:
+- Take in match footage
+-  
